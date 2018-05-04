@@ -1,0 +1,21 @@
+{
+  "name": "shopping-assistant-server",
+  "version": "1.0.0",
+  "description": "An API server for a shopping assistant application",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-validator": "^5.1.2",
+    "install": "^0.11.0",
+    "mysql2": "^1.5.3",
+    "nodemon": "^1.17.3",
+    "npm": "^6.0.0",
+    "sequelize": "^4.37.6"
+  }
+}
