@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_add_new_list">Add a new shopping list</string>
+    <string name="menu_my_lists">My lists</string>
+    <string name="menu_nearby_stores">Nearby stores</string>
+</resources>
