@@ -15,3 +15,13 @@ exports.create_item = function(req, res) {
     const user = matchedData(req);
     Category.create(user).then(user=>res.json(user));
 }
+
+exports.get_all = function(req, res) {
+    Category.findAll()
+    .then((users)=>{
+        return res.status(200).json(users);
+    })
+    .catch((err)=>{
+        return res.status(404);
+    });
+}
