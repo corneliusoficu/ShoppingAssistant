@@ -2,15 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:checked="true"
+            android:tag="new_shopping_list"
             android:icon="@android:drawable/ic_menu_add"
             android:id="@+id/nav_add_new_list"
             android:title="@string/menu_add_new_list"/>
         <item
+            android:checked="true"
             android:icon="@android:drawable/ic_menu_agenda"
             android:id="@+id/nav_my_lists"
+            android:tag="shopping_lists"
             android:title="@string/menu_my_lists"/>
         <item
+            android:tag="nearby_stores"
             android:icon="@android:drawable/ic_menu_compass"
             android:id="@+id/nav_nearby_stores"
             android:title="@string/menu_nearby_stores"/>

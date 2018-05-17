@@ -10,10 +10,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.soficu.corneliu.shoppingassistant.services.IShoppingAssistantService;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MainActivity extends BaseFragmentActivity {
 
     private DrawerLayout mDrawerLayout;
-    private Toolbar mToolBar;
+    private IShoppingAssistantService mShoppingAssistantService;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -31,10 +36,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.setupDrawer();
         this.setupToolbar();
+        this.initializeBackendConnection();
+    }
+
+    @Override
+    protected int getFragmentContainer() {
+        return R.id.fragments_container;
+    }
+
+    public IShoppingAssistantService getBackend() {
+        return this.mShoppingAssistantService;
     }
 
     private void setupToolbar() {
-        mToolBar = findViewById(R.id.toolbar);
+        Toolbar mToolBar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolBar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -53,12 +68,35 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(true);
                         mDrawerLayout.closeDrawers();
 
-                        //Swap UI fragments !
+                        switch (item.getItemId()){
+                            case R.id.nav_my_lists:
+                                showFragment("shopping_lists");
+                                break;
+                            case R.id.nav_add_new_list:
+                                showFragment("new_shopping_list");
+                                break;
+                            case R.id.nav_nearby_stores:
+                                showFragment("nearby_stores");
+                                break;
+                            default:
+                                break;
+                        }
 
                         return true;
                     }
                 }
         );
+
+        showFragment("shopping_lists");
+
     }
 
+    private void initializeBackendConnection() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        mShoppingAssistantService = retrofit.create(IShoppingAssistantService.class);
+    }
 }

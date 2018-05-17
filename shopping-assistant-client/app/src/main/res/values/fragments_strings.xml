@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shopping_lists_fragment">com.soficu.corneliu.shoppingassistant.fragments.ShoppingListsFragment</string>
+    <string name="new_shopping_list_fragment">com.soficu.corneliu.shoppingassistant.fragments.NewShoppingListFragment</string>
+    <string name="nearby_stores_fragment">com.soficu.corneliu.shoppingassistant.fragments.NearbyStoresFragment</string>
+    </resources>

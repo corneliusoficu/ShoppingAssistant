@@ -13,6 +13,10 @@ Category = sequelize.define('category', {
     category_name: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    image_link: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 },
 {
