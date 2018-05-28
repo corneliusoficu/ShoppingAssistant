@@ -13,9 +13,9 @@ import com.soficu.corneliu.shoppingassistant.helpers.ArraysHelper;
 
 import java.util.List;
 
-public class CategoriesFrameViewsAdapter extends FrameViewsAdapter<Pair<Category,Category>> {
+public class CategoriesAdapter extends ObjectsAdapter<Pair<Category,Category>> {
 
-    public CategoriesFrameViewsAdapter(Activity mContext, List<Category> items) {
+    public CategoriesAdapter(Activity mContext, List<Category> items) {
         super(mContext, ArraysHelper.convertToPairs(items));
     }
 
@@ -35,11 +35,13 @@ public class CategoriesFrameViewsAdapter extends FrameViewsAdapter<Pair<Category
             Pair<Category, Category> categories = (Pair<Category, Category>) getItem(position);
 
             FrameItem firstFrame = new FrameItem.FrameItemBuilder(view, R.id.first_frame_layout)
+                    .activity(mContext)
                     .textHolder(R.id.frame_view_item_first_text_view)
                     .imageHolder(R.id.frame_view_item_first_image)
                     .category(categories.first).build();
 
             FrameItem secondFrame = new FrameItem.FrameItemBuilder(view, R.id.second_frame_layout)
+                    .activity(mContext)
                     .textHolder(R.id.frame_view_item_second_text_view)
                     .imageHolder(R.id.frame_view_item_second_image)
                     .category(categories.second).build();

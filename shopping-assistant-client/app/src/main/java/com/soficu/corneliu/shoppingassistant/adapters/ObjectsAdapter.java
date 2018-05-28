@@ -12,12 +12,12 @@ import java.util.List;
  * Created by corne on 17-May-18.
  */
 
-public abstract class FrameViewsAdapter<T> extends BaseAdapter {
+public abstract class ObjectsAdapter<T> extends BaseAdapter {
 
     protected Activity mContext;
     protected List<T> mItems;
 
-    public FrameViewsAdapter(Activity mContext, List<T> items) {
+    public ObjectsAdapter(Activity mContext, List<T> items) {
         this.mContext = mContext;
         this.mItems = items;
     }

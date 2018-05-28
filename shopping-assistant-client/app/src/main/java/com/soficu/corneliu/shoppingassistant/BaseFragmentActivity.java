@@ -1,23 +1,42 @@
 package com.soficu.corneliu.shoppingassistant;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 public abstract class BaseFragmentActivity extends AppCompatActivity {
 
+    public interface FragmentBuilder{
+        public void addAdditionalData(Bundle fragmentBundle);
+    }
+
     public void showFragment(String fragmentName) {
+        this.showFragment(fragmentName, null);
+    }
+
+    public void showFragment(String fragmentName, FragmentBuilder builder) {
+
         Fragment newFragment = getFragmentByName(fragmentName);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if(newFragment != null) {
-            transaction.replace(getFragmentContainer(), newFragment);
+        if(newFragment == null) {
+            return;
         }
 
+        if(builder != null){
+            Bundle bundle = new Bundle();
+            builder.addAdditionalData(bundle);
+            newFragment.setArguments(bundle);
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(getFragmentContainer(), newFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
 
     abstract protected int getFragmentContainer();
 

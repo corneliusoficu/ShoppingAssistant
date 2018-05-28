@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.soficu.corneliu.shoppingassistant"
         minSdkVersion 15
         targetSdkVersion 26
@@ -43,5 +44,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+
     implementation 'com.squareup.picasso:picasso:2.71828'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
 }

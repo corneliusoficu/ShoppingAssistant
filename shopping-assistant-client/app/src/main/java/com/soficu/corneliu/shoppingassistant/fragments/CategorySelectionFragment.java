@@ -8,13 +8,11 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ListView;
 
-import com.soficu.corneliu.shoppingassistant.MainActivity;
 import com.soficu.corneliu.shoppingassistant.R;
-import com.soficu.corneliu.shoppingassistant.adapters.CategoriesFrameViewsAdapter;
-import com.soficu.corneliu.shoppingassistant.adapters.FrameViewsAdapter;
+import com.soficu.corneliu.shoppingassistant.adapters.CategoriesAdapter;
+import com.soficu.corneliu.shoppingassistant.adapters.ObjectsAdapter;
 import com.soficu.corneliu.shoppingassistant.entities.Category;
 
 import java.util.List;
@@ -27,16 +25,15 @@ import retrofit2.Response;
  * Created by corne on 17-May-18.
  */
 
-public class NewShoppingListFragment extends BaseFragment {
+public class CategorySelectionFragment extends BaseFragment {
 
     private ListView mCategoriesListView;
-    private FrameViewsAdapter<Pair<Category, Category>> frameViewsAdapter;
+    private ObjectsAdapter<Pair<Category, Category>> mCategoriesAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.new_shopping_list_fragment, container, false);
-
+        return inflater.inflate(R.layout.category_selection_fragment, container, false);
     }
 
     @Override
@@ -57,7 +54,7 @@ public class NewShoppingListFragment extends BaseFragment {
     }
 
     private void retrieveCategories() {
-        Call<List<Category>> call = ((MainActivity)getActivity()).getBackend().listCategories();
+        Call<List<Category>> call = this.activity.getBackend().listCategories();
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
@@ -77,7 +74,7 @@ public class NewShoppingListFragment extends BaseFragment {
     }
 
     private void enableListOfCategories(List<Category> categories) {
-        frameViewsAdapter = new CategoriesFrameViewsAdapter(activity, categories);
-        mCategoriesListView.setAdapter(frameViewsAdapter);
+        mCategoriesAdapter = new CategoriesAdapter(activity, categories);
+        mCategoriesListView.setAdapter(mCategoriesAdapter);
     }
 }

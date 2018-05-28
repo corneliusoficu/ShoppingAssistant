@@ -3,6 +3,6 @@ var router      = express.Router();
 
 var items_controller = require('../controllers/items_controller');
 
-router.post('/', items_controller.create_item);
+router.get('/category/:categoryId', items_controller.get_all)
 
 module.exports = router;

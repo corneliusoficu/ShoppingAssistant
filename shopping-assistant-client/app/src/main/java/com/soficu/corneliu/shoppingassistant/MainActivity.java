@@ -1,15 +1,20 @@
 package com.soficu.corneliu.shoppingassistant;
 
+import android.app.SearchManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.soficu.corneliu.shoppingassistant.services.IShoppingAssistantService;
 
 import retrofit2.Retrofit;
@@ -19,6 +24,8 @@ public class MainActivity extends BaseFragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private IShoppingAssistantService mShoppingAssistantService;
+    private MaterialSearchView searchView;
+    private MenuItem searchMenuItem;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -31,11 +38,31 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_bar, menu);
+
+        searchMenuItem = menu.findItem(R.id.action_search);
+        searchMenuItem.setVisible(false);
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setMenuItem(searchMenuItem);
+
+        super.onCreateOptionsMenu(menu);
+        showFragment("shopping_lists");
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.setupDrawer();
+        this.setupToolbar();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.setupDrawer();
-        this.setupToolbar();
         this.initializeBackendConnection();
     }
 
@@ -73,7 +100,7 @@ public class MainActivity extends BaseFragmentActivity {
                                 showFragment("shopping_lists");
                                 break;
                             case R.id.nav_add_new_list:
-                                showFragment("new_shopping_list");
+                                showFragment("category_selection");
                                 break;
                             case R.id.nav_nearby_stores:
                                 showFragment("nearby_stores");
@@ -86,9 +113,10 @@ public class MainActivity extends BaseFragmentActivity {
                     }
                 }
         );
+    }
 
-        showFragment("shopping_lists");
-
+    public MenuItem getSearchMenuItem() {
+        return searchMenuItem;
     }
 
     private void initializeBackendConnection() {
