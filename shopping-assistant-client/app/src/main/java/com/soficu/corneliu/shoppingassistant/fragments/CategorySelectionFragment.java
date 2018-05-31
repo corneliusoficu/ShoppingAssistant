@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.soficu.corneliu.shoppingassistant.R;
 import com.soficu.corneliu.shoppingassistant.adapters.CategoriesAdapter;
 import com.soficu.corneliu.shoppingassistant.adapters.ObjectsAdapter;
+import com.soficu.corneliu.shoppingassistant.connections.Backend;
 import com.soficu.corneliu.shoppingassistant.entities.Category;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class CategorySelectionFragment extends BaseFragment {
     }
 
     private void retrieveCategories() {
-        Call<List<Category>> call = this.activity.getBackend().listCategories();
+        Call<List<Category>> call = Backend.getInstance().listCategories();
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {

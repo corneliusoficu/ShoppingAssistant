@@ -1,8 +1,14 @@
 package com.soficu.corneliu.shoppingassistant;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
+import android.arch.persistence.room.Room;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,8 +19,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.soficu.corneliu.shoppingassistant.services.AppDatabase;
+import com.soficu.corneliu.shoppingassistant.services.FindStoreService;
 import com.soficu.corneliu.shoppingassistant.services.IShoppingAssistantService;
 
 import retrofit2.Retrofit;
@@ -23,7 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends BaseFragmentActivity {
 
     private DrawerLayout mDrawerLayout;
-    private IShoppingAssistantService mShoppingAssistantService;
     private MaterialSearchView searchView;
     private MenuItem searchMenuItem;
 
@@ -63,16 +71,36 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.initializeBackendConnection();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 555);
+            return;
+        }
+
+        startBackgroundStoreFindingService();
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode){
+            case 555:
+                if(grantResults.length > 1
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                    startBackgroundStoreFindingService();
+                }
+        }
+    }
+
+    private void startBackgroundStoreFindingService() {
+        Intent intent = new Intent(this, FindStoreService.class);
+        startService(intent);
     }
 
     @Override
     protected int getFragmentContainer() {
         return R.id.fragments_container;
-    }
-
-    public IShoppingAssistantService getBackend() {
-        return this.mShoppingAssistantService;
     }
 
     private void setupToolbar() {
@@ -119,12 +147,15 @@ public class MainActivity extends BaseFragmentActivity {
         return searchMenuItem;
     }
 
-    private void initializeBackendConnection() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mShoppingAssistantService = retrofit.create(IShoppingAssistantService.class);
+    public void hideKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        try{
+            if (inputMethodManager != null) {
+                inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
 }

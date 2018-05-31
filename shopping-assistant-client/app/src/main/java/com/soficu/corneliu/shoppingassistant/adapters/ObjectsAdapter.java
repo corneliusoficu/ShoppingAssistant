@@ -22,6 +22,14 @@ public abstract class ObjectsAdapter<T> extends BaseAdapter {
         this.mItems = items;
     }
 
+    public void clear() {
+        this.mItems.clear();
+    }
+
+    public void insert(T object) {
+        this.mItems.add(object);
+    }
+
     @Override
     public int getCount() {
         return mItems.size();

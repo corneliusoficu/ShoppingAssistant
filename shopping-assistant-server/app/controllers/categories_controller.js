@@ -14,7 +14,7 @@ exports.create_item = function(req, res) {
     
     const user = matchedData(req);
     Category.create(user).then(user=>res.json(user));
-}
+};
 
 exports.get_all = function(req, res) {
     Category.findAll()
@@ -24,4 +24,4 @@ exports.get_all = function(req, res) {
     .catch((err)=>{
         return res.status(404);
     });
-}
+};
